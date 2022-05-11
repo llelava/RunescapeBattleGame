@@ -80,22 +80,35 @@ def run():
     opponent_life_points = opponent_monster_stats["lifepoints"]
     # print(opponent_attack_options)
 
-    opponent_attack_choice = random.choice(opponent_attack_options)
-
     print('Your opponent was given {}'.format(opponent_monster['label']) + " it has {} lifepoints".format(
         opponent_life_points))
 
-    stat_choice = input('Which attack do you want to use? ' + ", ".join(your_attack_options) + ": ")
+    while your_life_points > 0 and opponent_life_points > 0:
+        stat_choice = input('Which attack do you want to use? ' + ", ".join(your_attack_options) + ": ")
+        opponent_attack_choice = random.choice(opponent_attack_options)
+        print('The opponent chose to fight back with {}'.format(opponent_attack_choice))
+        opponent_monster_stats = get_monster_stats(opponent_monster["value"])
+        my_stat = your_monster_stats[stat_choice]
+        opponent_stat = opponent_monster_stats[opponent_attack_choice]
+
+        opponent_life_points -= my_stat
+        print("You hit the enemy for {} points. It's new life points are {}".format(my_stat, opponent_life_points))
+
+        your_life_points -= opponent_stat
+        print("Enemy hits you for {} points. Your new life points are {} ".format(opponent_stat, your_life_points))
+
+    if opponent_life_points <= 0:
+        print("You have defeated a great enemy!")
+    elif your_life_points <= 0:
+        print("Your quest has come to an end cause you deaded")
 
 
-    print('The opponent chose to fight back with {}'.format(opponent_attack_choice))
-    opponent_monster_stats = get_monster_stats(opponent_monster["value"])
-    my_stat = your_monster_stats[stat_choice]
-    opponent_stat = opponent_monster_stats[stat_choice]
-    if my_stat > opponent_stat:
-        print('You Win!')
-    elif my_stat < opponent_stat:
-        print('You Lose!')
-    else:
-        print('Draw!')
+
+
+    # if my_stat > opponent_stat:
+    #     print('You Win!')
+    # elif my_stat < opponent_stat:
+    #     print('You Lose!')
+    # else:
+    #     print('Draw!')
 run()
