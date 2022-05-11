@@ -84,7 +84,13 @@ def run():
         opponent_life_points))
 
     while your_life_points > 0 and opponent_life_points > 0:
-        stat_choice = input('Which attack do you want to use? ' + ", ".join(your_attack_options) + ": ")
+
+        attack_damage_list = []
+        for i in range(0, len(your_attack_options)):
+            option = your_attack_options[i]
+            value = your_monster_stats[option]
+            attack_damage_list.append("{} ({})".format(option, value))
+        stat_choice = input('Which attack do you want to use? ' + ", ".join(attack_damage_list) + ": ")
         opponent_attack_choice = random.choice(opponent_attack_options)
         print('The opponent chose to fight back with {}'.format(opponent_attack_choice))
         opponent_monster_stats = get_monster_stats(opponent_monster["value"])
@@ -101,9 +107,6 @@ def run():
         print("You have defeated a great enemy!")
     elif your_life_points <= 0:
         print("Your quest has come to an end cause you deaded")
-
-
-
 
     # if my_stat > opponent_stat:
     #     print('You Win!')
