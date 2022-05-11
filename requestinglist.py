@@ -41,7 +41,6 @@ def get_random_monster():
 
 
 def get_monster_stats(monster_id):
-
     response = requests.get(runescape_id_api.format(monster_id))
     if response.status_code == 200:
         return response.json()
@@ -64,25 +63,32 @@ def run():
         #print(your_monster)
         your_monster_stats = get_monster_stats(your_monster['value'])
         your_attack_options = get_attack_options(your_monster_stats)
+    your_life_points = your_monster_stats["lifepoints"]
+
     #print(your_attack_options)
 
 
-    print('You were given {}'.format(your_monster['label']))
+    print('You were given {}'.format(your_monster['label']) + " it has {} lifepoints".format(your_life_points))
     #print("Monsters Stats {}".format(your_monster_stats))
-
-    stat_choice = input('Which attack do you want to use? ' + ", ".join(your_attack_options) + ": ")
 
     opponent_attack_options = []
     while len(opponent_attack_options) == 0:
         opponent_monster = get_random_monster()
-        #print(opponent_monster)
+        # print(opponent_monster)
         opponent_monster_stats = get_monster_stats(opponent_monster['value'])
         opponent_attack_options = get_attack_options(opponent_monster_stats)
-    #print(opponent_attack_options)
+    opponent_life_points = opponent_monster_stats["lifepoints"]
+    # print(opponent_attack_options)
 
     opponent_attack_choice = random.choice(opponent_attack_options)
 
-    print('The opponent chose {}'.format(opponent_monster['label']) + " and chose to fight back with {}".format(opponent_attack_choice))
+    print('Your opponent was given {}'.format(opponent_monster['label']) + " it has {} lifepoints".format(
+        opponent_life_points))
+
+    stat_choice = input('Which attack do you want to use? ' + ", ".join(your_attack_options) + ": ")
+
+
+    print('The opponent chose to fight back with {}'.format(opponent_attack_choice))
     opponent_monster_stats = get_monster_stats(opponent_monster["value"])
     my_stat = your_monster_stats[stat_choice]
     opponent_stat = opponent_monster_stats[stat_choice]
