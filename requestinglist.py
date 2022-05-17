@@ -91,17 +91,29 @@ def run():
             value = your_monster_stats[option]
             attack_damage_list.append("{} ({})".format(option, value))
         stat_choice = input('Which attack do you want to use? ' + ", ".join(attack_damage_list) + ": ")
+        if stat_choice not in your_attack_options:
+            print("Please select from available options")
+            continue
         opponent_attack_choice = random.choice(opponent_attack_options)
         print('The opponent chose to fight back with {}'.format(opponent_attack_choice))
         opponent_monster_stats = get_monster_stats(opponent_monster["value"])
         my_stat = your_monster_stats[stat_choice]
         opponent_stat = opponent_monster_stats[opponent_attack_choice]
 
-        opponent_life_points -= my_stat
-        print("You hit the enemy for {} points. It's new life points are {}".format(my_stat, opponent_life_points))
+        starter_opponent_life_points = opponent_monster_stats["lifepoints"]
+        starter_your_life_points = your_monster_stats["lifepoints"]
 
-        your_life_points -= opponent_stat
-        print("Enemy hits you for {} points. Your new life points are {} ".format(opponent_stat, your_life_points))
+        my_percentage_damage = random.randint(0, my_stat)
+        opponent_percentage_damage = random.randint(0, opponent_stat)
+
+        my_damage_done = (starter_opponent_life_points * my_percentage_damage / 100) + 10
+        opponent_damage_done = (starter_your_life_points * opponent_percentage_damage / 100) + 10
+
+        opponent_life_points -= my_damage_done
+        print("You hit the enemy for {} points. It's new life points are {}".format(my_damage_done, opponent_life_points))
+
+        your_life_points -= opponent_damage_done
+        print("Enemy hits you for {} points. Your new life points are {} ".format(opponent_damage_done, your_life_points))
 
     if opponent_life_points <= 0:
         print("You have defeated a great enemy!")
