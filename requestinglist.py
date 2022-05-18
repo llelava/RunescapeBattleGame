@@ -86,11 +86,14 @@ def run():
     print('Your opponent was given {}'.format(opponent_monster['label']) + " it has {} lifepoints".format(
         opponent_life_points))
 
-#the actual game portion#
+    print("Your health: [{}] ({}/{})".format("#"*20, your_life_points, your_life_points))
+    print("Opponent health: [{}] ({}/{})".format("#" * 20, opponent_life_points, opponent_life_points))
+
+    #the actual game portion#
 
     while your_life_points > 0 and opponent_life_points > 0:
 
-#for each attack option, gets the level of the attack and the number when printed#
+        #for each attack option, gets the level of the attack and the number when printed#
         attack_damage_list = []
         for i in range(0, len(your_attack_options)):
             option = your_attack_options[i]
@@ -127,11 +130,23 @@ def run():
 
         #part of the game letting you know how powerful your hit was and the opponents#
         opponent_life_points -= my_damage_done
-        print("You hit the enemy for {} points. It's new life points are {}".format(int(my_damage_done), int(opponent_life_points)))
+        print("You hit the enemy for {} points.".format(int(my_damage_done)))
+
+        opponent_healthbar = ("#" * int(((opponent_life_points / starter_opponent_life_points) * 20))) + ("." * (20 - int(((opponent_life_points / starter_opponent_life_points) * 20))))
+
+        print("Opponent health: [{}] ({}/{})".format(opponent_healthbar, int(opponent_life_points), (starter_opponent_life_points)))
+
+        if opponent_life_points == 0:
+            continue
 
         your_life_points -= opponent_damage_done
-        print("Enemy hits you for {} points. Your new life points are {} ".format(int(opponent_damage_done), int(your_life_points)))
-        #finished game, if
+        print("Enemy hits you for {} points.".format(int(opponent_damage_done)))
+
+        your_healthbar = ("#" * int(((your_life_points / starter_your_life_points) * 20))) + ("." * (20 - int(((your_life_points / starter_your_life_points) * 20))))
+        print("Your health: [{}] ({}/{})".format(your_healthbar, int(your_life_points), (starter_your_life_points)))
+
+        print()
+    #finished game, if
     if opponent_life_points <= 0:
         print("You have defeated a great enemy!")
     elif your_life_points <= 0:
